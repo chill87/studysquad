@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3 class="mb-0">Today — {{ today }}</h3>
+  {% if not my_checkin %}
+    <a href="{{ url_for('checkin') }}" class="btn btn-success">✅ Check in today's homework</a>
+  {% else %}
+    <span class="badge bg-success">You checked in today ✓</span>
+  {% endif %}
+</div>
+
+<div class="row g-4">
+  <div class="col-md-7">
+    <div class="card p-3 mb-4">
+      <h5>📅 Due today</h5>
+      {% if due_today %}
+        <ul class="list-group list-group-flush">
+          {% for a in due_today %}
+            <li class="list-group-item">
+              <a href="{{ url_for('assignment_detail', assignment_id=a['id']) }}">
+                <span class="badge bg-primary-subtle text-primary-emphasis subject-pill">{{ a['subject'] }}</span>
+                <strong>{{ a['title'] }}</strong>
+              </a>
+              {% if a['description'] %}<div class="text-muted small">{{ a['description'] }}</div>{% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="text-muted mb-0">Nothing due today. 🎉</p>
+      {% endif %}
+    </div>
+
+    <div class="card p-3">
+      <h5>⏭ Coming up</h5>
+      {% if upcoming %}
+        <ul class="list-group list-group-flush">
+          {% for a in upcoming %}
+            <li class="list-group-item d-flex justify-content-between">
+              <a href="{{ url_for('assignment_detail', assignment_id=a['id']) }}">
+                <span class="badge bg-primary-subtle text-primary-emphasis subject-pill">{{ a['subject'] }}</span>
+                {{ a['title'] }}
+              </a>
+              <span class="text-muted small">{{ a['due_date'] }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="text-muted mb-0">Nothing else on the calendar yet.</p>
+      {% endif %}
+      <a href="{{ url_for('calendar_view') }}" class="btn btn-outline-primary btn-sm mt-3">View full calendar</a>
+    </div>
+  </div>
+
+  <div class="col-md-5">
+    <div class="card p-3">
+      <h5>📸 Who's checked in today</h5>
+      {% if checkins_today %}
+        <div class="d-flex flex-wrap gap-2 mb-2">
+          {% for c in checkins_today %}
+            <div class="text-center" style="width:70px;">
+              <img class="checkin-badge" src="{{ url_for('uploaded_file', filename=c['photo']) }}" title="{{ c['author'] }}">
+              <div class="small text-truncate">{{ c['author'] }}</div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="text-muted">No one has checked in yet today — be the first!</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

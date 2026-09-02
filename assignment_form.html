@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card p-4">
+      <h4>{{ 'Edit assignment' if assignment else 'Add assignment' }}</h4>
+      <form method="post">
+        <div class="mb-3">
+          <label class="form-label">Due date</label>
+          <input class="form-control" type="date" name="due_date" required
+                 value="{{ assignment['due_date'] if assignment else '' }}">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Subject</label>
+          <input class="form-control" name="subject" placeholder="e.g. Algebra II" required
+                 value="{{ assignment['subject'] if assignment else '' }}">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Title</label>
+          <input class="form-control" name="title" placeholder="e.g. Worksheet 4.3" required
+                 value="{{ assignment['title'] if assignment else '' }}">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Details (optional)</label>
+          <textarea class="form-control" name="description" rows="3"
+                    placeholder="page numbers, instructions, etc.">{{ assignment['description'] if assignment else '' }}</textarea>
+        </div>
+        <button class="btn btn-primary w-100" type="submit">Save</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

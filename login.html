@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-5">
+    <div class="card p-4">
+      <h2 class="mb-1">📚 StudySquad</h2>
+      <p class="text-muted">Shared homework calendar, answer comparison, and daily check-ins.</p>
+      <form method="post">
+        <label class="form-label">What's your name?</label>
+        <input class="form-control" name="username" placeholder="e.g. Jordan" required autofocus>
+        <button class="btn btn-primary w-100 mt-3" type="submit">Enter</button>
+      </form>
+      <p class="text-muted small mt-3 mb-0">
+        No password — this is a lightweight tool for a small group of friends/classmates.
+        Don't post anything here you wouldn't want the whole group to see.
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

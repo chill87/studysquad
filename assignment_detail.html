@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card p-3 mb-4">
+  <span class="badge bg-primary-subtle text-primary-emphasis subject-pill mb-1" style="width:fit-content;">{{ assignment['subject'] }}</span>
+  <h3>{{ assignment['title'] }}</h3>
+  <p class="text-muted mb-1">Due {{ assignment['due_date'] }} · added by {{ assignment['created_by'] }}</p>
+  {% if assignment['description'] %}<p>{{ assignment['description'] }}</p>{% endif %}
+  <a class="btn btn-sm btn-outline-secondary" style="width:fit-content;"
+     href="{{ url_for('edit_assignment', assignment_id=assignment['id']) }}">Edit assignment</a>
+</div>
+
+<div class="card p-3 mb-4">
+  <h5>Post your answer</h5>
+  <form method="post" enctype="multipart/form-data">
+    <div class="mb-2">
+      <textarea class="form-control" name="body" rows="3" placeholder="Type your answer / work here..."></textarea>
+    </div>
+    <div class="mb-2">
+      <label class="form-label small text-muted">or attach a photo of your work</label>
+      <input class="form-control" type="file" name="photo" accept="image/*">
+    </div>
+    <button class="btn btn-primary" type="submit">Post</button>
+  </form>
+</div>
+
+<h5>Answers from the group ({{ answers|length }})</h5>
+{% if answers %}
+  <div class="row g-3">
+    {% for a in answers %}
+      <div class="col-md-6">
+        <div class="card p-3 h-100">
+          <div class="d-flex justify-content-between">
+            <strong>{{ a['author'] }}</strong>
+            <span class="text-muted small">{{ a['created_at'][:16] }}</span>
+          </div>
+          {% if a['body'] %}<p class="mt-2 mb-2">{{ a['body'] }}</p>{% endif %}
+          {% if a['photo'] %}
+            <img class="thumb" src="{{ url_for('uploaded_file', filename=a['photo']) }}">
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="text-muted">No answers posted yet — be the first to share yours!</p>
+{% endif %}
+{% endblock %}
